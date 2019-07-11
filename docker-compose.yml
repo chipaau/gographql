@@ -1,0 +1,22 @@
+version: "3.5"
+services:
+    app:
+        image: zephinzer/golang-dev:latest
+        container_name: go-graphql-example
+        ports:
+            - 8030:8080
+        entrypoint: ["start"]
+        volumes:
+            - "./:/go/src/app"
+            - "./.cache/pkg:/go/pkg"
+        env_file: .env
+        depends_on:
+            - db
+    db:
+        image: postgres
+        container_name: 'go-graphql-example-db'
+        ports:
+            - 5434:5432
+        environment:
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: ${DB_DATABASE}
